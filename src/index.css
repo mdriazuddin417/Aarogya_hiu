@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.th {
+    @apply text-[16px] text-black font-medium
+}
+
+.td {
+    @apply text-[14px] text-black font-medium
+}
+
+#sidebar a.active {
+    @apply bg-primary text-white
+}
+
+#sidebar a {
+    @apply bg-gray-600 text-white
+}
