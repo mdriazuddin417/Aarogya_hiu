@@ -4,14 +4,14 @@ import moment from "moment-timezone";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 const init = {
-  description: null,
-  patient_identifier: null,
-  purpose_of_request: null,
-  health_info_from: null,
-  health_info_to: null,
+  description: "",
+  patient_identifier: "",
+  purpose_of_request: "",
+  health_info_from: "",
+  health_info_to: "",
   health_info_type: [],
-  consent_expire: null,
-  consent_create: null,
+  consent_expire: "",
+  consent_create: "",
 };
 
 const NewConsentModal = () => {
@@ -24,11 +24,14 @@ const NewConsentModal = () => {
     });
   };
   const convertToIST = (datetime) => {
-    return `${moment(datetime).tz("Asia/Kolkata").format("YYYY-MM-DDTHH:mm:ss")}Z`;
+    return `${moment(datetime)
+      .tz("Asia/Kolkata")
+      .format("YYYY-MM-DDTHH:mm:ss")}Z`;
   };
+
   const body = {
     expiryTime: consent.consent_expire,
-    consentCreatedTime: consent.consent_create,
+    consentCreatedTime: convertToIST(new Date()),
     consent: {
       purpose: {
         text: consent.description,
@@ -48,14 +51,14 @@ const NewConsentModal = () => {
           system: "https://www.mciindia.org",
         },
       },
-      hiTypes: ["OPConsultation"],
+      hiTypes: consent.health_info_type,
       permission: {
         accessMode: "VIEW",
         dateRange: {
-          from: "2022-11-25T14:21:04Z",
-          to: "2023-03-30T14:21:04Z"
+          from: convertToIST(consent.health_info_from),
+          to: convertToIST(consent.health_info_to),
         },
-        dataEraseAt: "2023-09-20T14:21:04Z",
+        dataEraseAt: convertToIST(consent.consent_expire),
         frequency: {
           unit: "HOUR",
           value: 1,
@@ -66,16 +69,19 @@ const NewConsentModal = () => {
   };
 
   const handleSubmit = async () => {
-    await axios
-      .post(` ${import.meta.env.VITE_BASE_URL}/hiuinitiateconsent`, body)
-      .then((response) => {
-        if (response.status === 202) {
-          toast.success(" consent send successfully");
-        }
-      })
-      .catch((error) => {
-        console.error("this is the error", error);
-      });
+    console.log(body);
+    // await axios
+    //   .post(` ${import.meta.env.VITE_BASE_URL}/hiuinitiateconsent`, body)
+    //   .then((response) => {
+    //     if (response.status === 202) {
+    //       toast.success(" consent send successfully");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("this is the error", error);
+    //   });
+
+    setConsent({ ...init });
   };
 
   // Track form validity
@@ -111,25 +117,23 @@ const NewConsentModal = () => {
               <div className="flex items-center justify-start  flex-wrap">
                 <h3 className="text-lg md:w-[250px]">Patient identifier</h3>
                 <div>
-                  <select
+                  <input
+                    value={consent.patient_identifier}
                     onChange={(e) =>
                       setConsent({
                         ...consent,
                         patient_identifier: e.target.value,
                       })
                     }
-                    className="select select-bordered w-full md:w-[250px]"
-                  >
-                    {" "}
-                    <option value="">Please choose an option</option>
-                    <option value={"@sbx"}>@sbx</option>
-                  </select>
+                    className="input input-bordered w-full md:w-[250px]"
+                  />
                 </div>
               </div>
               <div className="flex items-center justify-start  flex-wrap">
                 <h3 className="text-lg md:w-[250px]">Purpose of request</h3>
                 <div>
                   <select
+                    value={consent.purpose_of_request}
                     onChange={(e) =>
                       setConsent({
                         ...consent,
@@ -147,10 +151,11 @@ const NewConsentModal = () => {
                 <h3 className="text-lg md:w-[250px]">Health info from</h3>
                 <div>
                   <input
+                    value={consent.health_info_from}
                     onChange={(e) =>
                       setConsent({
                         ...consent,
-                        health_info_from: convertToIST(e.target.value),
+                        health_info_from: e.target.value,
                       })
                     }
                     type="datetime-local"
@@ -162,10 +167,11 @@ const NewConsentModal = () => {
                 <h3 className="text-lg md:w-[250px]">Health info to</h3>
                 <div>
                   <input
+                    value={consent.health_info_to}
                     onChange={(e) =>
                       setConsent({
                         ...consent,
-                        health_info_to: convertToIST(e.target.value),
+                        health_info_to: e.target.value,
                       })
                     }
                     type="datetime-local"
@@ -179,29 +185,16 @@ const NewConsentModal = () => {
                   <HealthInfoType setConsent={handleSetHealthInfoType} />
                 </div>
               </div>
-              <div className="flex items-center justify-start flex-wrap">
-                <h3 className="text-lg md:w-[250px]">Consent create</h3>
-                <div>
-                  <input
-                    onChange={(e) =>
-                      setConsent({
-                        ...consent,
-                        consent_create: convertToIST(e.target.value),
-                      })
-                    }
-                    type="datetime-local"
-                    className="input input-bordered w-full md:w-[250px]"
-                  />
-                </div>
-              </div>
+
               <div className="flex items-center justify-start flex-wrap">
                 <h3 className="text-lg md:w-[250px]">Consent Expire</h3>
                 <div>
                   <input
+                    value={consent.consent_expire}
                     onChange={(e) =>
                       setConsent({
                         ...consent,
-                        consent_expire: convertToIST(e.target.value),
+                        consent_expire: e.target.value,
                       })
                     }
                     type="datetime-local"
@@ -213,6 +206,7 @@ const NewConsentModal = () => {
                 <h3 className="text-lg md:w-[250px]">Description</h3>
                 <div>
                   <textarea
+                    value={consent.description}
                     className="textarea textarea-bordered md:w-[450px] w-full"
                     onChange={(e) =>
                       setConsent({

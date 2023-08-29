@@ -37,6 +37,14 @@ const Home = () => {
                 Home
               </NavLink>
             </li>
+            <li id="sidebar">
+              <NavLink to={"data_fetch"}>
+                <span>
+                  <BiHomeAlt className="text-xl" />
+                </span>
+                Data Fetch
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

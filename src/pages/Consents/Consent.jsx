@@ -8,7 +8,7 @@ import axios from "axios";
 import ConsentTable from "../../components/ConsentTable";
 
 const Consent = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
 
   const getData = async () => {
     await axios
@@ -26,7 +26,7 @@ const Consent = () => {
   useEffect(() => {
     getData();
   }, []);
-  console.log("data of HIU",data);
+
   return (
     <div>
       <div className=" space-y-5 mt-5  text-[#44566C] text-[15px] ">
@@ -50,13 +50,19 @@ const Consent = () => {
                 style={{ fontFamily: "Arial, FontAwesome" }}
               />
 
-              <button className="btn btn-ghost btn-circle">
+              <button className="btn btn-ghost btn-circle" onClick={getData}>
                 <TbReload className="text-xl text-black" />
               </button>
             </div>
           </div>
         </div>
-        <ConsentTable data={data} />
+        {data ? (
+          <ConsentTable data={data} />
+        ) : (
+          <div className="h-[300px] flex justify-center items-center ">
+            <p className="text-lg text-gray-500 font-semibold">No Values</p>
+          </div>
+        )}
       </div>
       <NewConsentModal />
     </div>

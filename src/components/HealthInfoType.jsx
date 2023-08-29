@@ -41,7 +41,9 @@ const HealthInfoType = ({ setConsent }) => {
 
     const selectedTypes = updatedItems
       .filter((item) => item.value)
-      .map((item) => item.label);
+      .map((item) => {
+        return `${item.label.replace(/\s+/g, "")}`;
+      });
 
     setConsent(selectedTypes);
   };
