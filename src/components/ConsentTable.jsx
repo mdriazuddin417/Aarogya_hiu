@@ -19,7 +19,7 @@ const ConsentTable = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {data?.map((item, index) => (
+          {data.data?.map((item, index) => (
             <tr key={item._id}>
               <td className="font-bold text-gray-400 td"> {index + 1}</td>
 

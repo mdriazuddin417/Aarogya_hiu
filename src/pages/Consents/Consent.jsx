@@ -26,6 +26,7 @@ const Consent = () => {
   useEffect(() => {
     getData();
   }, []);
+  console.log("data of HIU",data);
   return (
     <div>
       <div className=" space-y-5 mt-5  text-[#44566C] text-[15px] ">

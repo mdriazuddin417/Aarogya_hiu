@@ -24,7 +24,7 @@ const NewConsentModal = () => {
     });
   };
   const convertToIST = (datetime) => {
-    return `${moment(datetime).tz("Asia/Kolkata").format("YYYY-MM-DDTHH:mm")}Z`;
+    return `${moment(datetime).tz("Asia/Kolkata").format("YYYY-MM-DDTHH:mm:ss")}Z`;
   };
   const body = {
     expiryTime: consent.consent_expire,
@@ -32,7 +32,7 @@ const NewConsentModal = () => {
     consent: {
       purpose: {
         text: consent.description,
-        code: consent.purpose_of_request,
+        code: "CAREMGT",
       },
       patient: {
         id: "gautam_1999@sbx",
@@ -48,14 +48,14 @@ const NewConsentModal = () => {
           system: "https://www.mciindia.org",
         },
       },
-      hiTypes: consent.health_info_type,
+      hiTypes: ["OPConsultation"],
       permission: {
         accessMode: "VIEW",
         dateRange: {
-          from: consent.health_info_from,
-          to: consent.health_info_to,
+          from: "2022-11-25T14:21:04Z",
+          to: "2023-03-30T14:21:04Z"
         },
-        dataEraseAt: consent.consent_expire,
+        dataEraseAt: "2023-09-20T14:21:04Z",
         frequency: {
           unit: "HOUR",
           value: 1,
