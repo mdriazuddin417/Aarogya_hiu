@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TbReload } from "react-icons/tb";
 import { AiOutlineRight } from "react-icons/ai";
 import { consentList } from "../../constant/consentLists";
 import NewConsentModal from "../../components/NewConsentModal";
+import axios from "axios";
+import ConsentTable from "../../components/ConsentTable";
 
 const Consent = () => {
+  const [data, setData] = useState([]);
+
+  const getData = async () => {
+    await axios
+      .post(` ${import.meta.env.VITE_BASE_URL}/getConsentsHIU`)
+      .then((response) => {
+        if (response.status === 202) {
+          setData(response.data);
+        }
+      })
+      .catch((error) => {
+        console.error("this is the error", error);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <div>
       <div className=" space-y-5 mt-5  text-[#44566C] text-[15px] ">
@@ -35,57 +55,7 @@ const Consent = () => {
             </div>
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <table className="table table-auto table-compact table-zebra w-full">
-            <thead>
-              <tr className="bg-primary">
-                <th className="th"></th>
-                <th className="th">Name</th>
-                <th className="th">Jataayu ID</th>
-                <th className="th">Request Status</th>
-                <th className="th">Consent create on</th>
-                <th className="th">Consent granted on</th>
-                <th className="th">Consent expire on</th>
-                <th className="th"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {consentList?.map((item, index) => (
-                <tr key={item.id} className="cursor-pointer">
-                  <td className="font-bold text-gray-400 td"> {index + 1}</td>
-                  <td className=" td">{item.name}</td>
-                  <td className=" td">{item.jataayaId}</td>
-                  <td className="">
-                    <div className="flex items-center td">
-                      {item.request_status}
-                    </div>
-                  </td>
-                  <td className="">
-                    <div className="flex items-center td">
-                      {item.consent_create}
-                    </div>
-                  </td>
-                  <td className="">
-                    <div className="flex items-center td">
-                      {item.consent_granted}
-                    </div>
-                  </td>
-                  <td className="">
-                    <div className="flex items-center td">
-                      {item.consent_expire}
-                    </div>
-                  </td>
-
-                  <td className=" font-bold text-2xl">
-                    <Link to={`/health_data`}>
-                      <AiOutlineRight className="text-primary" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ConsentTable data={data} />
       </div>
       <NewConsentModal />
     </div>

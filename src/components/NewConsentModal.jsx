@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import HealthInfoType from "./HealthInfoType";
-
+import moment from "moment-timezone";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 const init = {
+  description: null,
   patient_identifier: null,
   purpose_of_request: null,
   health_info_from: null,
   health_info_to: null,
   health_info_type: [],
   consent_expire: null,
+  consent_create: null,
 };
 
 const NewConsentModal = () => {
@@ -19,9 +23,59 @@ const NewConsentModal = () => {
       health_info_type: selectedTypes,
     });
   };
+  const convertToIST = (datetime) => {
+    return `${moment(datetime).tz("Asia/Kolkata").format("YYYY-MM-DDTHH:mm")}Z`;
+  };
+  const body = {
+    expiryTime: consent.consent_expire,
+    consentCreatedTime: consent.consent_create,
+    consent: {
+      purpose: {
+        text: consent.description,
+        code: consent.purpose_of_request,
+      },
+      patient: {
+        id: "gautam_1999@sbx",
+      },
+      hiu: {
+        id: "arogyaId-facility",
+      },
+      requester: {
+        name: "Dr. Manjus6788",
+        identifier: {
+          type: "REGNO",
+          value: "MH10013",
+          system: "https://www.mciindia.org",
+        },
+      },
+      hiTypes: consent.health_info_type,
+      permission: {
+        accessMode: "VIEW",
+        dateRange: {
+          from: consent.health_info_from,
+          to: consent.health_info_to,
+        },
+        dataEraseAt: consent.consent_expire,
+        frequency: {
+          unit: "HOUR",
+          value: 1,
+          repeats: 0,
+        },
+      },
+    },
+  };
 
-  const handleSubmit = () => {
-    console.log("Consent Data:", consent);
+  const handleSubmit = async () => {
+    await axios
+      .post(` ${import.meta.env.VITE_BASE_URL}/hiuinitiateconsent`, body)
+      .then((response) => {
+        if (response.status === 202) {
+          toast.success(" consent send successfully");
+        }
+      })
+      .catch((error) => {
+        console.error("this is the error", error);
+      });
   };
 
   // Track form validity
@@ -29,12 +83,13 @@ const NewConsentModal = () => {
   useEffect(() => {
     // Check form validity whenever consent data changes
     const isValid =
-      consent.patient_identifier &&
+      // consent.patient_identifier &&
       consent.purpose_of_request &&
+      consent.health_info_type.length > 0 &&
       consent.health_info_from &&
       consent.health_info_to &&
-      consent.health_info_type.length > 0 &&
-      consent.consent_expire;
+      consent.consent_expire &&
+      consent.description;
 
     setIsFormValid(isValid);
   }, [consent]);
@@ -95,10 +150,10 @@ const NewConsentModal = () => {
                     onChange={(e) =>
                       setConsent({
                         ...consent,
-                        health_info_from: e.target.value,
+                        health_info_from: convertToIST(e.target.value),
                       })
                     }
-                    type="date"
+                    type="datetime-local"
                     className="input input-bordered w-full md:w-[250px]"
                   />
                 </div>
@@ -110,10 +165,10 @@ const NewConsentModal = () => {
                     onChange={(e) =>
                       setConsent({
                         ...consent,
-                        health_info_to: e.target.value,
+                        health_info_to: convertToIST(e.target.value),
                       })
                     }
-                    type="date"
+                    type="datetime-local"
                     className="input input-bordered w-full md:w-[250px]"
                   />
                 </div>
@@ -125,18 +180,48 @@ const NewConsentModal = () => {
                 </div>
               </div>
               <div className="flex items-center justify-start flex-wrap">
+                <h3 className="text-lg md:w-[250px]">Consent create</h3>
+                <div>
+                  <input
+                    onChange={(e) =>
+                      setConsent({
+                        ...consent,
+                        consent_create: convertToIST(e.target.value),
+                      })
+                    }
+                    type="datetime-local"
+                    className="input input-bordered w-full md:w-[250px]"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-start flex-wrap">
                 <h3 className="text-lg md:w-[250px]">Consent Expire</h3>
                 <div>
                   <input
                     onChange={(e) =>
                       setConsent({
                         ...consent,
-                        consent_expire: e.target.value,
+                        consent_expire: convertToIST(e.target.value),
                       })
                     }
                     type="datetime-local"
                     className="input input-bordered w-full md:w-[250px]"
                   />
+                </div>
+              </div>
+              <div className="flex items-center justify-start flex-wrap">
+                <h3 className="text-lg md:w-[250px]">Description</h3>
+                <div>
+                  <textarea
+                    className="textarea textarea-bordered md:w-[450px] w-full"
+                    onChange={(e) =>
+                      setConsent({
+                        ...consent,
+                        description: e.target.value,
+                      })
+                    }
+                    placeholder="Description"
+                  ></textarea>
                 </div>
               </div>
             </div>
