@@ -2,32 +2,32 @@ import axios from "axios";
 import { useState } from "react";
 const ConsentArtefactModal = ({ data, getHIUConsent, setVisible }) => {
   const [consentId, setConsentId] = useState("");
-
+  console.log("data from cnsent artefact",data);
   const handleConsent = async () => {
     setVisible(true);
-    // await axios
-    //   .post(` ${import.meta.env.VITE_BASE_URL}/fetchConsentArtefact`, {
-    //     consentId: consentId,
-    //   })
-    //   .then((response) => {
-    //     if (response.status === 202) {
-    //       console.log(response.data);
-    // setHIULoading(true);
-    //       setTimeout(() => {getHIUConsent()}, 4000);
-    //
-    //     }
-    //   })
+    await axios
+      .post(` ${import.meta.env.VITE_BASE_URL}/fetchConsentArtefact`, {
+        consentId: consentId,
+      })
+      .then((response) => {
+        if (response.status === 202) {
+          console.log(response.data);
+          //setHIULoading(true);
+          setTimeout(() => { getHIUConsent(consentId) }, 4000);
+          clearTimeout();
 
-    //   .catch((error) => {
-    //     console.log("inside error function");
-    //
-    //     console.error("this is the error", error);
-    //   });
+        }
+      })
 
-    setTimeout(() => {
-      getHIUConsent();
-    }, 4000);
-    clearTimeout();
+      .catch((error) => {
+        console.log("inside error function");
+
+        console.error("this is the error", error);
+      });
+
+    // setTimeout(() => {
+    //   getHIUConsent();
+    // }, 4000);
   };
 
   return (
@@ -48,12 +48,12 @@ const ConsentArtefactModal = ({ data, getHIUConsent, setVisible }) => {
                 className="select select-primary w-full max-w-xs"
               >
                 <option value={""}>Choose your consent ID</option>
-                {data.map((item, index) => (
+                {data?.data?.map((item, index) => (
                   <option key={index} value={item.consentID}>
-                    <p>Consent ID</p> (
-                    <span className="px-2 py-1 rounded-sm bg-green text-white text-sm">
-                      {item.patientID}
-                    </span>
+                    Consent ID (
+
+                    {item.patientID}
+
                     )
                   </option>
                 ))}

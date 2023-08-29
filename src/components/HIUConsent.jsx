@@ -14,8 +14,12 @@ const HIUConsent = ({ data }) => {
         consentID: consentId,
       })
       .then((response) => {
-        console.log(response.data);
-        setLoading(false);
+        if(response.status === 202){
+
+          //res.status(202).json({ message: 'request sent to gateway!' });
+          console.log(response.data);
+          setLoading(false);
+        }
       })
 
       .catch((error) => {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const data = [
   {
-    label: "OP Consulation",
+    label: "OP Consultation",
     value: false,
   },
   {

@@ -70,16 +70,16 @@ const NewConsentModal = () => {
 
   const handleSubmit = async () => {
     console.log(body);
-    // await axios
-    //   .post(` ${import.meta.env.VITE_BASE_URL}/hiuinitiateconsent`, body)
-    //   .then((response) => {
-    //     if (response.status === 202) {
-    //       toast.success(" consent send successfully");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error("this is the error", error);
-    //   });
+    await axios
+      .post(` ${import.meta.env.VITE_BASE_URL}/hiuinitiateconsent`, body)
+      .then((response) => {
+        if (response.status === 202) {
+          toast.success(" consent send successfully");
+        }
+      })
+      .catch((error) => {
+        console.error("this is the error", error);
+      });
 
     setConsent({ ...init });
   };

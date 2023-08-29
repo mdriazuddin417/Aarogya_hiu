@@ -4,7 +4,7 @@ import ConsentArtefactModal from "../../components/ConsentArtefactModel";
 import { fetchDat, hiUConsent } from "../../constant/data";
 import HIUConsent from "../../components/HIUConsent";
 const DataFetch = () => {
-  const [data, setData] = useState(fetchDat);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hiuConsentData, setHIUConsentData] = useState([]);
@@ -15,6 +15,7 @@ const DataFetch = () => {
       .post(` ${import.meta.env.VITE_BASE_URL}/fetchConsentIDHIU`)
       .then((response) => {
         if (response.status === 202) {
+          console.log("this is data from fetchconset",response.data);
           setData(response.data);
           setLoading(false);
         }
@@ -25,21 +26,23 @@ const DataFetch = () => {
       });
     window.consent.showModal();
   };
-  const getHIUConsent = async () => {
-    console.log("this function after 4 minute");
-    setHIUConsentData(hiUConsent);
+  const getHIUConsent = async (consentId) => {
+    console.log("this function after 4 seconds");
+    // setHIUConsentData(hiUConsent);
 
-    // await axios
-    //   .post(` ${import.meta.env.VITE_BASE_URL}/getHIUConsentArtefactData`)
-    //   .then((response) => {
-    //     if (response.status === 202) {
-    //       console.log(response.data);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log("inside error function");
-    //     console.error("this is the error", error);
-    //   });
+    await axios
+      .post(` ${import.meta.env.VITE_BASE_URL}/getHIUConsentArtefactData`,
+      {consentId:consentId})
+      .then((response) => {
+        if (response.status === 202) {
+          setHIUConsentData(response.data.data)
+          console.log(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log("inside error function");
+        console.error("this is the error", error);
+      });
 
     setVisible(false);
   };
