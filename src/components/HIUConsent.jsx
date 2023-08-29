@@ -4,8 +4,6 @@ import { toast } from "react-hot-toast";
 
 const HIUConsent = ({ data }) => {
   const [loading, setLoading] = useState(false);
-  console.log(data);
-
   const { careContexts, patientId, status, consentId, hipId } = data;
 
   const sendRecordRequest = async () => {
@@ -18,7 +16,7 @@ const HIUConsent = ({ data }) => {
         if (response.status === 202) {
           //res.status(202).json({ message: 'request sent to gateway!' });
           console.log(response.data);
-          toast.success("Request sent to gateway!");
+          toast.success("Request sent to HIP");
           setLoading(false);
         }
       })
