@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ConsentArtefactModal from "../../components/ConsentArtefactModel";
 import { fetchDat, hiUConsent } from "../../constant/data";
 import HIUConsent from "../../components/HIUConsent";
+import { toast } from "react-hot-toast";
 const DataFetch = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -15,31 +16,33 @@ const DataFetch = () => {
       .post(` ${import.meta.env.VITE_BASE_URL}/fetchConsentIDHIU`)
       .then((response) => {
         if (response.status === 202) {
-          console.log("this is data from fetchconset",response.data);
+          console.log("this is data from fetchconset", response.data);
           setData(response.data);
           setLoading(false);
+          window.consent.showModal();
         }
       })
       .catch((error) => {
+        toast.error("Something is error");
         console.error("this is the error", error);
         setLoading(false);
       });
-    window.consent.showModal();
   };
   const getHIUConsent = async (consentId) => {
     console.log("this function after 4 seconds");
-    // setHIUConsentData(hiUConsent);
 
     await axios
-      .post(` ${import.meta.env.VITE_BASE_URL}/getHIUConsentArtefactData`,
-      {consentId:consentId})
+      .post(` ${import.meta.env.VITE_BASE_URL}/getHIUConsentArtefactData`, {
+        consentId: consentId,
+      })
       .then((response) => {
         if (response.status === 202) {
-          setHIUConsentData(response.data.data)
+          setHIUConsentData(response.data.data);
           console.log(response.data);
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.log("inside error function");
         console.error("this is the error", error);
       });
@@ -56,7 +59,8 @@ const DataFetch = () => {
           <div className="h-[80vh] flex  justify-center items-center w-full">
             <button
               onClick={getData}
-              className="btn btn-primary btn-md font-bold flex gap-3 ml-5 "
+              disabled={loading || visible}
+              className="btn btn-primary btn-md font-bold flex gap-3 ml-5  disabled:bg-gray-200"
             >
               {loading && !visible ? (
                 <div className="flex items-center gap-4">

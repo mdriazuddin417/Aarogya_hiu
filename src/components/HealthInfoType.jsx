@@ -1,68 +1,43 @@
 import React, { useState } from "react";
 
 const data = [
-  {
-    label: "OP Consultation",
-    value: false,
-  },
-  {
-    label: "Discharge Summary",
-    value: false,
-  },
-  {
-    label: "Immunization Record",
-    value: false,
-  },
-  {
-    label: "Wellness Record",
-    value: false,
-  },
-  {
-    label: "Diagnostic Reports",
-    value: false,
-  },
-  {
-    label: "Prescription",
-    value: false,
-  },
-  {
-    label: "Health Document Record",
-    value: false,
-  },
+  "OP Consultation",
+  "Discharge Summary",
+  "Immunization Record",
+  "Wellness Record",
+  "Diagnostic Reports",
+  "Prescription",
+  "Health Document Record",
 ];
 
-const HealthInfoType = ({ setConsent }) => {
-  const [items, setItems] = useState([...data]);
-
-  const handleItem = (index) => {
-    const updatedItems = [...items];
-    updatedItems[index].value = !updatedItems[index].value;
-    setItems(updatedItems);
-
-    const selectedTypes = updatedItems
-      .filter((item) => item.value)
-      .map((item) => {
-        return `${item.label.replace(/\s+/g, "")}`;
-      });
-
-    setConsent(selectedTypes);
+const HealthInfoType = ({ health_info_type, setHealth_info_type }) => {
+  const handleCheckboxChange = (value) => {
+    if (health_info_type?.includes(value.replace(/\s+/g, ""))) {
+      setHealth_info_type(
+        health_info_type?.filter(
+          (item) => item.replace(/\s+/g, "") !== value.replace(/\s+/g, "")
+        )
+      );
+    } else {
+      setHealth_info_type([...health_info_type, value.replace(/\s+/g, "")]);
+    }
   };
 
   return (
     <div className="">
       <div className="grid grid-rows-4 grid-cols-2 gap-4">
-        {items.map((item, index) => (
+        {data?.map((item, index) => (
           <label
             key={index}
             className="label justify-start cursor-pointer gap-5"
           >
             <input
-              onChange={() => handleItem(index)}
               type="checkbox"
               className="checkbox checkbox-primary"
-              checked={item.value}
+              checked={health_info_type?.includes(item.replace(/\s+/g, ""))}
+              onChange={() => handleCheckboxChange(item)}
             />
-            <span className="label-text">{item.label}</span>
+            {item}
           </label>
         ))}
       </div>

@@ -3,13 +3,13 @@ import HealthInfoType from "./HealthInfoType";
 import moment from "moment-timezone";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+
 const init = {
   description: "",
   patient_identifier: "",
   purpose_of_request: "",
   health_info_from: "",
   health_info_to: "",
-  health_info_type: [],
   consent_expire: "",
   consent_create: "",
 };
@@ -17,12 +17,7 @@ const init = {
 const NewConsentModal = () => {
   const [consent, setConsent] = useState({ ...init });
   const [isFormValid, setIsFormValid] = useState(false);
-  const handleSetHealthInfoType = (selectedTypes) => {
-    setConsent({
-      ...consent,
-      health_info_type: selectedTypes,
-    });
-  };
+  const [health_info_type, setHealth_info_type] = useState([]);
   const convertToIST = (datetime) => {
     return `${moment(datetime)
       .tz("Asia/Kolkata")
@@ -51,7 +46,7 @@ const NewConsentModal = () => {
           system: "https://www.mciindia.org",
         },
       },
-      hiTypes: consent.health_info_type,
+      hiTypes: health_info_type,
       permission: {
         accessMode: "VIEW",
         dateRange: {
@@ -82,6 +77,7 @@ const NewConsentModal = () => {
       });
 
     setConsent({ ...init });
+    setHealth_info_type([]);
   };
 
   // Track form validity
@@ -91,7 +87,7 @@ const NewConsentModal = () => {
     const isValid =
       // consent.patient_identifier &&
       consent.purpose_of_request &&
-      consent.health_info_type.length > 0 &&
+      health_info_type.length > 0 &&
       consent.health_info_from &&
       consent.health_info_to &&
       consent.consent_expire &&
@@ -182,7 +178,10 @@ const NewConsentModal = () => {
               <div className="flex items-center justify-start flex-wrap">
                 <h3 className="text-lg md:w-[250px]">Health info type</h3>
                 <div>
-                  <HealthInfoType setConsent={handleSetHealthInfoType} />
+                  <HealthInfoType
+                    setHealth_info_type={setHealth_info_type}
+                    health_info_type={health_info_type}
+                  />
                 </div>
               </div>
 
