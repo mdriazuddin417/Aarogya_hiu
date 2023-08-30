@@ -45,12 +45,12 @@ const ConsentArtefactModal = ({ data, getHIUConsent, setVisible }) => {
                 defaultValue={""}
                 value={consentId}
                 onChange={(e) => setConsentId(e.target.value)}
-                className="select select-primary w-full max-w-xs"
+                className="select select-primary w-[500px]"
               >
                 <option value={""}>Choose your consent ID</option>
                 {data?.data?.map((item, index) => (
                   <option key={index} value={item.consentID}>
-                    Consent ID (
+                    {item.consentID} (
 
                     {item.patientID}
 
