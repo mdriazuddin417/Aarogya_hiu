@@ -6,7 +6,7 @@ import { consentList } from "../../constant/consentLists";
 import NewConsentModal from "../../components/NewConsentModal";
 import axios from "axios";
 import ConsentTable from "../../components/ConsentTable";
-
+import { toast } from "react-hot-toast";
 const Consent = () => {
   const [data, setData] = useState(null);
 
@@ -20,6 +20,7 @@ const Consent = () => {
       })
       .catch((error) => {
         console.error("this is the error", error);
+        toast.error("Something is wrong?");
       });
   };
 

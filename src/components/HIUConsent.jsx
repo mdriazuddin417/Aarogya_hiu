@@ -22,7 +22,7 @@ const HIUConsent = ({ data }) => {
       })
 
       .catch((error) => {
-        toast.error("Something is error");
+        toast.error("Something is wrong?");
         console.error("this is the error", error);
         setLoading(false);
       });

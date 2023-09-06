@@ -8,7 +8,7 @@ const DataFetch = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [hiuConsentData, setHIUConsentData] = useState([]);
+  const [hiuConsentData, setHIUConsentData] = useState(hiUConsent);
 
   const getData = async () => {
     setLoading(true);
@@ -23,7 +23,7 @@ const DataFetch = () => {
         }
       })
       .catch((error) => {
-        toast.error("Something is error");
+        toast.error("Something is wrong ?");
         console.error("this is the error", error);
         setLoading(false);
       });
@@ -45,6 +45,7 @@ const DataFetch = () => {
         setLoading(false);
         console.log("inside error function");
         console.error("this is the error", error);
+        toast.error("Something is wrong ?");
       });
 
     setVisible(false);

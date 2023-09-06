@@ -73,6 +73,7 @@ const NewConsentModal = () => {
         }
       })
       .catch((error) => {
+        toast.error("Something wrong ? ");
         console.error("this is the error", error);
       });
 

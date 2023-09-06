@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 const ConsentArtefactModal = ({ data, getHIUConsent, setVisible }) => {
   const [consentId, setConsentId] = useState("");
-  console.log("data from cnsent artefact",data);
+  console.log("data from cnsent artefact", data);
   const handleConsent = async () => {
     setVisible(true);
     await axios
@@ -13,15 +14,16 @@ const ConsentArtefactModal = ({ data, getHIUConsent, setVisible }) => {
         if (response.status === 202) {
           console.log(response.data);
           //setHIULoading(true);
-          setTimeout(() => { getHIUConsent(consentId) }, 4000);
+          setTimeout(() => {
+            getHIUConsent(consentId);
+          }, 4000);
           clearTimeout();
-
         }
       })
 
       .catch((error) => {
         console.log("inside error function");
-
+        toast.error("Something wrong ? ");
         console.error("this is the error", error);
       });
 
@@ -50,11 +52,7 @@ const ConsentArtefactModal = ({ data, getHIUConsent, setVisible }) => {
                 <option value={""}>Choose your consent ID</option>
                 {data?.data?.map((item, index) => (
                   <option key={index} value={item.consentID}>
-                    Consent ID (
-
-                    {item.patientID}
-
-                    )
+                    Consent ID ({item.patientID})
                   </option>
                 ))}
               </select>
