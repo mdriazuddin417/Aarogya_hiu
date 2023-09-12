@@ -23,6 +23,7 @@ const HealthData = () => {
         if (response.status === 202) {
           setLoading(false);
           setHealthData(response?.data?.data);
+          setIsOpen(false);
         }
       })
       .catch((error) => {
@@ -34,6 +35,7 @@ const HealthData = () => {
   };
   useEffect(() => {
     getData();
+    setIsOpen(healthData ? false : true);
   }, []);
   const handleReNavigate = () => {
     navigation("/");
