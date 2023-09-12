@@ -35,7 +35,6 @@ const HealthData = () => {
   };
   useEffect(() => {
     getData();
-    setIsOpen(healthData ? false : true);
   }, []);
   const handleReNavigate = () => {
     navigation("/");
@@ -135,24 +134,23 @@ const HealthData = () => {
           {loading ? (
             <span className="loading loading-spinner loading-lg"></span>
           ) : (
-            <p className="text-lg text-gray-700 font-medium">No data</p>
+            <CustomModal isOpen={isOpen} setIsOpen={setIsOpen}>
+              <div className="flex flex-col justify-center items-center gap-4">
+                <h2 className="text-xl font-medium my-2">
+                  Data transfer still in progress
+                </h2>
+                <button
+                  onClick={handleReNavigate}
+                  className="btn btn-primary btn-md font-bold flex gap-3 ml-5 "
+                >
+                  Consent list
+                </button>
+              </div>
+            </CustomModal>
           )}
         </div>
       )}
       <NoHealthData />
-      <CustomModal isOpen={isOpen} setIsOpen={setIsOpen}>
-        <div className="flex flex-col justify-center items-center gap-4">
-          <h2 className="text-xl font-medium my-2">
-            Data transfer still in progress
-          </h2>
-          <button
-            onClick={handleReNavigate}
-            className="btn btn-primary btn-md font-bold flex gap-3 ml-5 "
-          >
-            Consent list
-          </button>
-        </div>
-      </CustomModal>
     </div>
   );
 };
