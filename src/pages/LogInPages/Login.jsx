@@ -5,15 +5,22 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import SignInWithGmail from "./SignInWithGmail";
 // import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 // import auth from "../../firebase.init";
+import { useDispatch } from "react-redux";
 import logo from "../../assets/logo.png";
-// import { toast } from "react-toastify";
+// import { toast } from "react-hot-toast"
 import SideText from "./SideText";
+import "./authentication.css";
+import { login } from "../../features/counter/userModeSlice";
+import { toast } from "react-hot-toast";
+import ReCAPTCHA from "react-google-recaptcha";
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [Otp, setOtp] = useState("");
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
+  const [password, setPassword] = useState("");
+  const [recapture, setRecapture] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   // const [signInWithEmailAndPassword, user, loading, error] =
   //   useSignInWithEmailAndPassword(auth);
 
@@ -21,6 +28,16 @@ const Login = () => {
   //   toast.success("Login Successfully!");
   //   navigate(from, { replace: true });
   // }
+  const onChange = (value) => {
+    console.log("Captcha value:", value);
+    setRecapture(!recapture);
+  };
+
+  const handleLogin = () => {
+    dispatch(login());
+    toast.success("Login Successfully!");
+    navigate(from, { replace: true });
+  };
 
   return (
     <div className="">
@@ -49,43 +66,43 @@ const Login = () => {
               <div className="form relative">
                 <input
                   type="text"
-                  onChange={(e) => setOtp(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="login-textbox "
                   placeholder=" "
                 />
                 <label htmlFor="" className="login-form-label">
-                  OTP
+                  Password
                 </label>
               </div>
             </div>
 
-            <p className="text-black ">Forget Password ?</p>
+            <div>
+              <ReCAPTCHA
+                sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                onChange={onChange}
+              />
+            </div>
 
-            {email && Otp ? (
-              <button
-                // onClick={() => signInWithEmailAndPassword(email, Otp)}
-                className="  w-full lg:h-[70px]  md:h-[60px] h-[50px] bg-primary lg:text-[22px] text-lg font-bold rounded text-white"
-              >
-                Login
-              </button>
-            ) : (
-              <button
-                disabled
-                className="  w-full lg:h-[70px]  md:h-[60px] h-[50px] bg-primary bg-opacity-40  lg:text-[22px] text-lg font-bold rounded text-white"
-              >
-                Login
-              </button>
-            )}
+            {/* <p className="text-black ">Forget Password ?</p> */}
 
-            <SignInWithGmail />
+            <button
+              disabled={!email || !password || !recapture}
+              onClick={handleLogin}
+              // onClick={() => signInWithEmailAndPassword(email, Otp)}
+              className="  w-full lg:h-[70px]  md:h-[60px] h-[50px] bg-primary disabled:bg-gray-300 lg:text-[22px] text-lg font-bold rounded text-white"
+            >
+              Login
+            </button>
+
+            {/* <SignInWithGmail /> */}
           </div>
-          <ScanCode font={"text-black font-bold"} />
+          {/* <ScanCode font={"text-black font-bold"} />
           <p className="font-semibold lg:text-xl text-lg text-center">
             Do not have an account?
             <span className="text-primary font-bold cursor-pointer">
               <Link to={"/create"}>Signup Here</Link>
             </span>
-          </p>
+          </p> */}
         </div>
 
         <SideText />

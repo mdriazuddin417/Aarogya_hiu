@@ -15,7 +15,7 @@ const Consent = () => {
       .post(` ${import.meta.env.VITE_BASE_URL}/getConsentsHIU`)
       .then((response) => {
         if (response.status === 202) {
-          setData(response.data);
+          setData(response.data.data);
         }
       })
       .catch((error) => {

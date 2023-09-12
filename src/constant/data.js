@@ -60,3 +60,32 @@ export const hiUConsent = [
     __v: 0,
   },
 ];
+
+export const healthDetails = {
+  _id: {
+    $oid: "650006677caf0a16af27fd72",
+  },
+  consentID: "df64c8e4-1ace-4af4-bcea-768ef156bc93",
+  documentTitle: "Prescription",
+  patientInfo: {
+    name: "test",
+    gender: "male",
+    birthDate: "2022-02-12",
+  },
+  practitioners: [
+    {
+      id: "123",
+      name: "Mr.doctor12",
+    },
+  ],
+  medications: [
+    {
+      medication: "PCM12345",
+      dosageInstruction: "2 times a day twice",
+      doctorName: "Mr.doctor12",
+      doctorId: "Practitioner/123",
+      authoredDate: "2023-09-13",
+    },
+  ],
+  __v: 0,
+};

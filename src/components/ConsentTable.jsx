@@ -19,7 +19,7 @@ const ConsentTable = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {data.data?.map((item, index) => (
+          {data?.map((item, index) => (
             <tr key={item._id}>
               <td className="font-bold text-gray-400 td"> {index + 1}</td>
 
@@ -46,7 +46,7 @@ const ConsentTable = ({ data }) => {
               </td>
 
               <td className=" font-bold text-2xl">
-                <Link to={`/health_data`}>
+                <Link to={`/health_data/${item?.consentID}`}>
                   <AiOutlineRight className="text-primary" />
                 </Link>
               </td>

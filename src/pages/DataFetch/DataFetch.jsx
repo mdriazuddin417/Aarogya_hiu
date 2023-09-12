@@ -8,7 +8,7 @@ const DataFetch = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [hiuConsentData, setHIUConsentData] = useState(hiUConsent);
+  const [hiuConsentData, setHIUConsentData] = useState([]);
 
   const getData = async () => {
     setLoading(true);
