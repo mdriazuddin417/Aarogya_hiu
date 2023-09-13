@@ -3,6 +3,7 @@ import HealthInfoType from "./HealthInfoType";
 import moment from "moment-timezone";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 const init = {
   description: "",
@@ -17,6 +18,8 @@ const init = {
 const NewConsentModal = () => {
   const [consent, setConsent] = useState({ ...init });
   const [isFormValid, setIsFormValid] = useState(false);
+  const [idVerified, setIdVerified] = useState(false);
+  const [statusLoading, setStatusLoading] = useState(false);
   const [health_info_type, setHealth_info_type] = useState([]);
   const convertToIST = (datetime) => {
     return `${moment(datetime)
@@ -33,7 +36,7 @@ const NewConsentModal = () => {
         code: "CAREMGT",
       },
       patient: {
-        id: "gautam_1999@sbx",
+        id: consent.patient_identifier,
       },
       hiu: {
         id: "arogyaId-facility",
@@ -97,6 +100,42 @@ const NewConsentModal = () => {
     setIsFormValid(isValid);
   }, [consent]);
 
+  const findPatient = async () => {
+    setStatusLoading(true);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/findPatient`
+      );
+      if (response.status === 202) {
+        toast.success("Patient verification request sent");
+        const intervalId = setInterval(() => {
+          patientFetchStatus(intervalId);
+        }, 1000);
+        setStatusLoading(false);
+      }
+    } catch (error) {
+      setStatusLoading(false);
+      toast.error("Patient ID is not available");
+      console.error("Error:", error);
+    }
+  };
+
+  const patientFetchStatus = async (intervalId) => {
+    console.log("Fetching status...");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/fetchStatus`
+      );
+      if (response.status === 202) {
+        setIdVerified(true);
+        clearInterval(intervalId);
+      }
+    } catch (error) {
+      setStatusLoading(false);
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div>
       <dialog id="new_consent" className="modal">
@@ -113,7 +152,7 @@ const NewConsentModal = () => {
               </h4>
               <div className="flex items-center justify-start  flex-wrap">
                 <h3 className="text-lg md:w-[250px]">Patient identifier</h3>
-                <div>
+                <div className="flex justify-start items-center gap-5  relative">
                   <input
                     value={consent.patient_identifier}
                     onChange={(e) =>
@@ -124,6 +163,19 @@ const NewConsentModal = () => {
                     }
                     className="input input-bordered w-full md:w-[250px]"
                   />
+
+                  {idVerified && (
+                    <AiFillCheckCircle className=" text-green-500 text-xl absolute -top-1 right-[28%]" />
+                  )}
+
+                  {consent.patient_identifier.length > 0 && (
+                    <div
+                      onClick={findPatient}
+                      className="bg-green-500 px-5 py-1 rounded-full text-white font-bold cursor-pointer hover:scale-95 transform duration-200"
+                    >
+                      {statusLoading ? "Loading..." : "verify"}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex items-center justify-start  flex-wrap">
