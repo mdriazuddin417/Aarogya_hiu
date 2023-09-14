@@ -26,7 +26,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <Toaster />
+      <Toaster position="top-right" reverseOrder={false} />
     </>
   );
 };

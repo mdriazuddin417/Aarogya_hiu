@@ -15,10 +15,13 @@ export const userModeSlice = createSlice({
     login: (state, action) => {
       state.user = true;
     },
+    logout: (state, action) => {
+      state.user = false;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { createUserMode, login } = userModeSlice.actions;
+export const { createUserMode, login, logout } = userModeSlice.actions;
 
 export default userModeSlice.reducer;

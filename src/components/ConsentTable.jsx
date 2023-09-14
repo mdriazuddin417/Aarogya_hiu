@@ -25,6 +25,17 @@ const ConsentTable = ({ data }) => {
     }
   };
 
+  const setTime = (date) => {
+    const year = new Date(date.slice(0, -1)).getFullYear();
+    const month = new Date(date.slice(0, -1)).getMonth() + 1; // Months are zero-based
+    const day = new Date(date.slice(0, -1)).getDate();
+    const hours = new Date(date.slice(0, -1)).getHours();
+    const minutes = new Date(date.slice(0, -1)).getMinutes();
+    const seconds = new Date(date.slice(0, -1)).getSeconds();
+
+    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="table table-auto table-compact table-zebra w-full">
@@ -53,17 +64,17 @@ const ConsentTable = ({ data }) => {
               </td>
               <td className="">
                 <div className="flex items-center td">
-                  {item.consentCreatedTime.substring(0, 10)}
+                  {setTime(item.consentCreatedTime)}
                 </div>
               </td>
               <td className="">
                 <div className="flex items-center td">
-                  {item.timestamp.substring(0, 10)}
+                  {setTime(item.timestamp)}
                 </div>
               </td>
               <td className="">
                 <div className="flex items-center td">
-                  {item.expiryTime.substring(0, 10)}
+                  {setTime(item.expiryTime)}
                 </div>
               </td>
 

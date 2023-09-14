@@ -40,7 +40,7 @@ const HealthData = () => {
     navigation("/");
     setIsOpen(false);
   };
-  console.log("health data",healthData);
+  console.log("health data", healthData);
   return (
     <div className="p-5">
       <h1 className="text-gray-500 text-xl p-2 text-start font-medium">
@@ -63,9 +63,6 @@ const HealthData = () => {
           </div>
 
           <div className="space-y-5 ">
-            <h1 className="text-gray-700 text-2xl  text-start font-medium ">
-              NDHM DOCTOR FIVE TEST WO UAT
-            </h1>
             <div className="p-3 rounded bg-gray-300 flex justify-between items-start">
               <h1 className="text-gray-700 text-lg  text-start font-medium">
                 DOCUMENT: {healthData?.documentTitle || "No data"}
@@ -76,15 +73,6 @@ const HealthData = () => {
                   <span className="  font-normal">
                     {healthData.medications[0].authoredDate || "No data"}
                   </span>
-                </h3>
-                <h3 className="text-gray-700 text-[16px] text-start font-medium">
-                  Authors:{" "}
-                  <span className="  font-normal">
-                    {healthData.practitioners[0].name || "No data"}
-                  </span>
-                </h3>
-                <h3 className="text-gray-700 text-[16px] text-start font-medium">
-                  Status: <span className="  font-normal">FINAL </span>
                 </h3>
               </div>
             </div>
@@ -132,21 +120,19 @@ const HealthData = () => {
         </div>
       ) : (
         <div className="mt-10 flex justify-center">
-         
-            <CustomModal isOpen={isOpen} setIsOpen={setIsOpen}>
-              <div className="flex flex-col justify-center items-center gap-4">
-                <h2 className="text-xl font-medium my-2">
-                  Data transfer still in progress
-                </h2>
-                <button
-                  onClick={handleReNavigate}
-                  className="btn btn-primary btn-md font-bold flex gap-3 ml-5 "
-                >
-                  Consent list
-                </button>
-              </div>
-            </CustomModal>
-          
+          <CustomModal isOpen={isOpen} setIsOpen={setIsOpen}>
+            <div className="flex flex-col justify-center items-center gap-4">
+              <h2 className="text-xl font-medium my-2">
+                Data transfer still in progress
+              </h2>
+              <button
+                onClick={handleReNavigate}
+                className="btn btn-primary btn-md font-bold flex gap-3 ml-5 "
+              >
+                Consent list
+              </button>
+            </div>
+          </CustomModal>
         </div>
       )}
       <NoHealthData />
