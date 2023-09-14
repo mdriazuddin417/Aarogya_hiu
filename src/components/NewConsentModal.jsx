@@ -152,7 +152,7 @@ const NewConsentModal = () => {
               </h4>
               <div className="flex items-center justify-start  flex-wrap">
                 <h3 className="text-lg md:w-[250px]">Patient identifier</h3>
-                <div className="flex justify-start items-center gap-5  relative">
+                <div className="flex justify-start items-center gap-5  relative ">
                   <input
                     value={consent.patient_identifier}
                     onChange={(e) =>
@@ -165,7 +165,7 @@ const NewConsentModal = () => {
                   />
 
                   {idVerified && (
-                    <AiFillCheckCircle className=" text-green-500 text-xl absolute -top-1 right-[28%]" />
+                    <AiFillCheckCircle className=" text-green-500 text-xl absolute -top-1 right-[30%]" />
                   )}
 
                   {consent.patient_identifier.length > 0 && (
@@ -173,7 +173,11 @@ const NewConsentModal = () => {
                       onClick={findPatient}
                       className="bg-green-500 px-5 py-1 rounded-full text-white font-bold cursor-pointer hover:scale-95 transform duration-200"
                     >
-                      {statusLoading ? "Loading..." : "verify"}
+                      {statusLoading
+                        ? "Loading..."
+                        : idVerified
+                        ? "verified"
+                        : "verify"}
                     </div>
                   )}
                 </div>

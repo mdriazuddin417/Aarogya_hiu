@@ -1,7 +1,7 @@
 export const consentList = [
   {
     _id: "64ed8153d008bb2680cdd8c0",
-    expiryTime: "2023-09-20T14:21:04Z",
+    expiryTime: "2022-09-20T14:21:04Z",
     consentCreatedTime: "2023-08-20T14:21:04Z",
     timestamp: "2023-08-29T05:25:39.460750852",
     patientID: "gautam_1999@sbx",
@@ -12,7 +12,7 @@ export const consentList = [
   },
   {
     _id: "64ed8153d008bb2680cdd8c0",
-    expiryTime: "2023-09-20T14:21:04Z",
+    expiryTime: "2022-09-20T14:21:04Z",
     consentCreatedTime: "2023-08-20T14:21:04Z",
     timestamp: "2023-08-29T05:25:39.460750852",
     patientID: "gautam_1999@sbx",
