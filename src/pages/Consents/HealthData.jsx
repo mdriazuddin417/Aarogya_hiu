@@ -23,7 +23,7 @@ const HealthData = () => {
         if (response.status === 202) {
           setLoading(false);
           setHealthData(response?.data?.data);
-          setIsOpen(false);
+          setIsOpen(true);
         }
       })
       .catch((error) => {
@@ -40,6 +40,7 @@ const HealthData = () => {
     navigation("/");
     setIsOpen(false);
   };
+  console.log("health data",healthData);
   return (
     <div className="p-5">
       <h1 className="text-gray-500 text-xl p-2 text-start font-medium">
@@ -47,7 +48,7 @@ const HealthData = () => {
         <span className=" font-semibold text-gray-700">Health Data</span>
       </h1>
 
-      {healthData ? (
+      {healthData?.consentID ? (
         <div>
           <div className="mb-5">
             <h3 className="text-gray-700 text-xl text-start font-medium">
@@ -131,9 +132,7 @@ const HealthData = () => {
         </div>
       ) : (
         <div className="mt-10 flex justify-center">
-          {loading ? (
-            <span className="loading loading-spinner loading-lg"></span>
-          ) : (
+         
             <CustomModal isOpen={isOpen} setIsOpen={setIsOpen}>
               <div className="flex flex-col justify-center items-center gap-4">
                 <h2 className="text-xl font-medium my-2">
@@ -147,7 +146,7 @@ const HealthData = () => {
                 </button>
               </div>
             </CustomModal>
-          )}
+          
         </div>
       )}
       <NoHealthData />
