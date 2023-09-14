@@ -106,7 +106,7 @@ const NewConsentModal = () => {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/findPatient`,
         {
-          healthID:consent.patient_identifier
+          healthID: consent.patient_identifier,
         }
       );
       if (response.status === 202) {
@@ -131,6 +131,7 @@ const NewConsentModal = () => {
       );
       if (response.status === 202) {
         setIdVerified(response.data.data);
+        toast.error("Try again !!");
         clearInterval(intervalId);
       }
     } catch (error) {
